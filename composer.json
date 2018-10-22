@@ -1,0 +1,19 @@
+{
+    "name": "htmlburger/carbon-field-SmartLink",
+    "description": "Carbon Fields extension, that adds a SmartLink field type.",
+    "keywords": ["wordpress", "carbon-field", "carbon-field-SmartLink"],
+    "type": "library",
+    "license": "GPL-2.0+",
+    "authors": [],
+    "require": {
+        "htmlburger/carbon-fields": "^2.0"
+    },
+    "autoload": {
+        "files": [
+            "field.php"
+        ],
+        "psr-4": {
+            "Carbon_Field_SmartLink\\": "core/"
+        }
+    }
+}
