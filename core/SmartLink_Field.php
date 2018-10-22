@@ -1,6 +1,6 @@
 <?php
 
-namespace Carbon_Field_SmartLink;
+namespace EvansHunt\Carbon_Field_SmartLink;
 
 use Carbon_Fields\Field\Field;
 use App\Debug;
@@ -95,6 +95,16 @@ class SmartLink_Field extends Field
         $types = array_values(get_post_types(['public' => true]));
 
         return array_merge($this->get_archives_from_types($types), $this->get_posts_from_types($types));
+    }
+
+    /**
+     * Return a differently formatted value for end-users
+     *
+     * @return mixed
+     */
+    public function get_formatted_value()
+    {
+        return json_decode($this->get_value());
     }
 
     function get_archives_from_types($types)
