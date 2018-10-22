@@ -19,7 +19,7 @@
             "field.php"
         ],
         "psr-4": {
-            "EvansHunt\\Carbon_Field_SmartLink\\": "core/"
+            "Carbon_Field_SmartLink\\": "core/"
         }
     }
 }

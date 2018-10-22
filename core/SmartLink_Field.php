@@ -1,6 +1,6 @@
 <?php
 
-namespace EvansHunt\Carbon_Field_SmartLink;
+namespace Carbon_Field_SmartLink;
 
 use Carbon_Fields\Field\Field;
 use App\Debug;
