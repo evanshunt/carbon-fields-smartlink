@@ -3,12 +3,13 @@
 namespace Carbon_Field_SmartLink;
 
 use Carbon_Fields\Field\Field;
+use Carbon_Field_SmartLink\LinkTypes;
 use App\Debug;
 
 class SmartLink_Field extends Field
 {
 
-    protected $internal = true;
+    protected $linkType = LinkTypes::INTERNAL;
     protected $target = "_self";
     protected $postId = 0;
     protected $url = '';
@@ -67,7 +68,7 @@ class SmartLink_Field extends Field
         $json = json_decode($field_data['value']);
 
         if (is_object($json)) {
-            $this->internal = (property_exists($json, 'internal')) ? $json->internal : $this->internal;
+            $this->linkType = (property_exists($json, 'linkType')) ? $json->linkType : $this->linkType;
             $this->target = (property_exists($json, 'target')) ? $json->target : $this->target;
             $this->postId = (property_exists($json, 'postId')) ? $json->postId : $this->postId;
             $this->url = (property_exists($json, 'url')) ? $json->url : $this->url;
@@ -77,7 +78,7 @@ class SmartLink_Field extends Field
             $field_data,
             [
                 'posts' => $this->get_posts(),
-                'internal' => $this->internal,
+                'linkType' => $this->linkType,
                 'target' => $this->target,
                 'postId' => $this->postId,
                 'url' => $this->url

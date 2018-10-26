@@ -14,7 +14,7 @@ import withStore from 'fields/decorators/with-store';
 import withSetup from 'fields/decorators/with-setup';
 
 const stringifyField = (field) => JSON.stringify({
-	internal: field.internal,
+	linkType: field.linkType,
 	target: field.target,
 	postId: field.postId,
 	url: field.url
@@ -35,6 +35,7 @@ export const SmartLinkField = ({
 	handleTypeChange,
 	handleTargetChange,
 	handleUrlChange,
+	handleEmailChange,
 	handleIdChange
 }) => {
 	let post = field.posts.find( post => post.value === field.postId );
@@ -42,24 +43,33 @@ export const SmartLinkField = ({
 		<div className="link-config">
 			<fieldset>
 				<legend>Link Type</legend>
+					<label>
+						<input
+							type="radio"
+							name={name + 'linkType'}
+							value='1'
+							onChange={handleTypeChange}
+							checked={field.linkType == 1 ? 'checked' : ''}
+						/>Internal
+				</label>
 				<label>
 					<input
 						type="radio"
-						name={name + 'internal'}
-						value='1'
-						onChange={handleTypeChange}
-						checked={field.internal == '1'}
-					/>Internal
-			</label>
-				<label>
-					<input
-						type="radio"
-						name={name + 'internal'}
+						name={name + 'linkType'}
 						value='0'
 						onChange={handleTypeChange}
-						checked={field.internal == '0'}
+						checked={field.linkType == 0 ? 'checked' : ''}
 					/>External
-			</label>
+				</label>
+				<label>
+					<input
+						type="radio"
+						name={name + 'linkType'}
+						value='2'
+						onChange={handleTypeChange}
+						checked={field.linkType == 2 ? 'checked' : ''}
+					/>Email
+				</label>
 			</fieldset>
 			<fieldset>
 				<legend>Target</legend>
@@ -83,15 +93,27 @@ export const SmartLinkField = ({
 			</label>
 			</fieldset>
 		</div>
-		{ field.internal == '1' ?
+		{ field.linkType == '1' ?
 			<label>
 				Page
 				<Select
 					value={post ? post : ''}
 					onChange={handleIdChange}
 					options={field.posts}
-				/>	
-			</label>		
+				/>
+			</label>
+			:
+			<span></span>
+		}
+		{field.linkType == '2' ?
+			<label>Email
+				<input
+					type="text"
+					name={name + 'email'}
+					value={field.linkType == '2' ? field.url.slice(7) : ''}
+					onChange={handleEmailChange}
+				/>
+			</label>
 			:
 			<span></span>
 		}
@@ -101,9 +123,9 @@ export const SmartLinkField = ({
 				type="text"
 				name={name + 'url'}
 				value={field.url ? field.url : ''}
-				readOnly={field.internal == '1'}
+				readOnly={field.linkType == '1' || field.linkType == '2'}
 				onChange={handleUrlChange}
-			/>			
+			/>
 		</label>
 		<input
 			type="hidden"
@@ -153,7 +175,7 @@ export const enhance = compose(
 	 */
 	withHandlers({
 		handleTypeChange: ({ field, setFieldValue }) => ({ target: { value } }) => {
-			field.internal = value;
+			field.linkType = value;
 			if (value) {
 				let post = field.posts.find(post => post.value === field.postId);
 				field.url = (typeof post !== 'undefined') ? post.url : '';
@@ -172,6 +194,13 @@ export const enhance = compose(
 		},
 		handleUrlChange: ({ field, setFieldValue }) => ({ target: { value } }) => {
 			field.url = value;
+			setFieldValue(
+				field.id,
+				stringifyField(field)
+			);
+		},
+		handleEmailChange: ({ field, setFieldValue }) => ({ target: { value } }) => {
+			field.url = `mailto:${value}`;
 			setFieldValue(
 				field.id,
 				stringifyField(field)
