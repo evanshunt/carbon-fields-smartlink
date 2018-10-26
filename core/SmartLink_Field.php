@@ -85,6 +85,8 @@ class SmartLink_Field extends Field
             ]
         );
 
+        $field_data['initial'] = $field_data;
+
         return $field_data;
     }
 

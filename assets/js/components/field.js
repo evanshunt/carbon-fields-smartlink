@@ -37,10 +37,10 @@ export const SmartLinkField = ({
 	handleUrlChange,
 	handleEmailChange,
 	handleTelChange,
-	handleIdChange
+	handleIdChange,
+	handleRestore
 }) => {
 	let post = field.posts.find( post => post.value === field.postId );
-	console.log(field.url.slice(5));
 	return <Field field={field}>
 		<div className="link-config">
 			<fieldset>
@@ -103,6 +103,7 @@ export const SmartLinkField = ({
 					/>New Tab
 			</label>
 			</fieldset>
+			<button onClick={handleRestore}>Restore Saved</button>
 		</div>
 		{ field.linkType == '1' ?
 			<label>
@@ -244,6 +245,10 @@ export const enhance = compose(
 				field.id,
 				stringifyField(field)
 			);
+		},
+		handleRestore: ({ field, setFieldValue }) => (event) => {
+			//event.preventDefault();
+			console.log(field.initial);
 		}
 	})
 );
