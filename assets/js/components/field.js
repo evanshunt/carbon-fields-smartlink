@@ -36,9 +36,11 @@ export const SmartLinkField = ({
 	handleTargetChange,
 	handleUrlChange,
 	handleEmailChange,
+	handleTelChange,
 	handleIdChange
 }) => {
 	let post = field.posts.find( post => post.value === field.postId );
+	console.log(field.url.slice(5));
 	return <Field field={field}>
 		<div className="link-config">
 			<fieldset>
@@ -69,6 +71,15 @@ export const SmartLinkField = ({
 						onChange={handleTypeChange}
 						checked={field.linkType == 2 ? 'checked' : ''}
 					/>Email
+				</label>
+				<label>
+					<input
+						type="radio"
+						name={name + 'linkType'}
+						value='3'
+						onChange={handleTypeChange}
+						checked={field.linkType == 3 ? 'checked' : ''}
+					/>Phone
 				</label>
 			</fieldset>
 			<fieldset>
@@ -117,18 +128,30 @@ export const SmartLinkField = ({
 			:
 			<span></span>
 		}
+		{field.linkType == '3' ?
+			<label>Phone
+				<input
+					type="text"
+					name={name + 'phone'}
+					value={field.linkType == '3' ? field.url.slice(4) : ''}
+					onChange={handleTelChange}
+				/>
+			</label>
+			:
+			<span></span>
+		}
 		<label>
 			URL
 			<input
 				type="text"
 				name={name + 'url'}
 				value={field.url ? field.url : ''}
-				readOnly={field.linkType == '1' || field.linkType == '2'}
+				readOnly={parseInt(field.linkType)}
 				onChange={handleUrlChange}
 			/>
 		</label>
 		<input
-			type="hidden"
+			type="text"
 			id={field.id}
 			name={name}
 			value={field.value}
@@ -175,6 +198,7 @@ export const enhance = compose(
 	 */
 	withHandlers({
 		handleTypeChange: ({ field, setFieldValue }) => ({ target: { value } }) => {
+			field.postId = '';
 			field.linkType = value;
 			if (value) {
 				let post = field.posts.find(post => post.value === field.postId);
@@ -201,6 +225,13 @@ export const enhance = compose(
 		},
 		handleEmailChange: ({ field, setFieldValue }) => ({ target: { value } }) => {
 			field.url = `mailto:${value}`;
+			setFieldValue(
+				field.id,
+				stringifyField(field)
+			);
+		},
+		handleTelChange: ({ field, setFieldValue }) => ({ target: { value } }) => {
+			field.url = `tel:${value.replace(/\s/g, '')}`;
 			setFieldValue(
 				field.id,
 				stringifyField(field)
