@@ -2,6 +2,12 @@
   display: flex;
   flex-flow: row wrap;
   margin-bottom: 1em;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.carbon-smartlink button {
+  flex: 0 0 auto;
 }
 
 .carbon-smartlink .link-config fieldset {
