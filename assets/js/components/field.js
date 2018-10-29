@@ -165,7 +165,7 @@ export const SmartLinkField = ({
 			/>
 		</label>
 		<input
-			type="text"
+			type="hidden"
 			id={field.id}
 			name={name}
 			value={field.value}
