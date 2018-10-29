@@ -65,7 +65,9 @@ class SmartLink_Field extends Field
     {
         $field_data = parent::to_json($load);
 
-        $json = json_decode($field_data['value']);
+        $json = $field_data['value'];
+
+        $field_data['value'] = json_encode($json);
 
         if (is_object($json)) {
             $this->linkType = (property_exists($json, 'linkType')) ? $json->linkType : $this->linkType;
@@ -86,6 +88,16 @@ class SmartLink_Field extends Field
         );
 
         return $field_data;
+    }
+
+    /**
+     * Return a differently formatted value for end-users
+     *
+     * @return mixed		
+     */
+    public function get_formatted_value()
+    {
+        return json_decode($this->get_value());
     }
 
     /**
