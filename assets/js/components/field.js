@@ -20,6 +20,19 @@ const stringifyField = (field) => JSON.stringify({
 	url: field.url
 });
 
+const setInitial = (field) => {
+	let newField = field;
+	if(typeof newField.initial === 'undefined') {
+		newField.initial = {
+			linkType: newField.linkType,
+			target: newField.target,
+			postId: newField.postId,
+			url: newField.url			
+		}
+	}
+	return newField;
+}
+
 /**
  * Render a number input field.
  *
@@ -199,6 +212,7 @@ export const enhance = compose(
 	 */
 	withHandlers({
 		handleTypeChange: ({ field, setFieldValue }) => ({ target: { value } }) => {
+			field = setInitial(field);
 			field.postId = '';
 			field.linkType = value;
 			if (value) {
@@ -211,6 +225,7 @@ export const enhance = compose(
 			);
 		},
 		handleTargetChange: ({ field, setFieldValue }) => ({ target: { value } }) => {
+			field = setInitial(field);
 			field.target = value;
 			setFieldValue(
 				field.id,
@@ -218,6 +233,7 @@ export const enhance = compose(
 			);
 		},
 		handleUrlChange: ({ field, setFieldValue }) => ({ target: { value } }) => {
+			field = setInitial(field);
 			field.url = value;
 			setFieldValue(
 				field.id,
@@ -225,6 +241,7 @@ export const enhance = compose(
 			);
 		},
 		handleEmailChange: ({ field, setFieldValue }) => ({ target: { value } }) => {
+			field = setInitial(field);
 			field.url = `mailto:${value}`;
 			setFieldValue(
 				field.id,
@@ -232,6 +249,7 @@ export const enhance = compose(
 			);
 		},
 		handleTelChange: ({ field, setFieldValue }) => ({ target: { value } }) => {
+			field = setInitial(field);
 			field.url = `tel:${value.replace(/\s/g, '')}`;
 			setFieldValue(
 				field.id,
@@ -239,6 +257,7 @@ export const enhance = compose(
 			);
 		},
 		handleIdChange: ({ field, setFieldValue }) => (value) => {
+			field = setInitial(field);
 			field.postId = value.value;
 			field.url = value.url;
 			setFieldValue(
@@ -247,8 +266,18 @@ export const enhance = compose(
 			);
 		},
 		handleRestore: ({ field, setFieldValue }) => (event) => {
-			//event.preventDefault();
-			console.log(field.initial);
+			event.preventDefault();
+
+			if (field.initial !== 'undefined') {
+				field.linkType = field.initial.linkType;
+				field.target = field.initial.target;
+				field.postId = field.initial.postId;
+				field.url = field.initial.url;
+				setFieldValue(
+					field.id,
+					stringifyField(field)
+				);
+			}
 		}
 	})
 );

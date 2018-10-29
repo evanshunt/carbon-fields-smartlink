@@ -74,7 +74,7 @@ class SmartLink_Field extends Field
             $this->url = (property_exists($json, 'url')) ? $json->url : $this->url;
         }
 
-        $field_data = array_merge(
+        return array_merge(
             $field_data,
             [
                 'posts' => $this->get_posts(),
@@ -84,8 +84,6 @@ class SmartLink_Field extends Field
                 'url' => $this->url
             ]
         );
-
-        $field_data['initial'] = $field_data;
 
         return $field_data;
     }

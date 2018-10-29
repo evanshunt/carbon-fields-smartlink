@@ -3,6 +3,7 @@
   flex-flow: row wrap;
   margin-bottom: 1em;
   justify-content: space-between;
+  align-items: flex-start;
 }
 
 .carbon-smartlink button {
