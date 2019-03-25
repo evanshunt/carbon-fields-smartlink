@@ -3,12 +3,13 @@
 namespace Carbon_Field_SmartLink;
 
 use Carbon_Fields\Field\Field;
+use Carbon_Field_SmartLink\LinkTypes;
 use App\Debug;
 
 class SmartLink_Field extends Field
 {
 
-    protected $internal = true;
+    protected $linkType = LinkTypes::INTERNAL;
     protected $target = "_self";
     protected $postId = 0;
     protected $url = '';
@@ -64,20 +65,22 @@ class SmartLink_Field extends Field
     {
         $field_data = parent::to_json($load);
 
-        $json = json_decode($field_data['value']);
+        $json = $field_data['value'];
+
+        $field_data['value'] = json_encode($json);
 
         if (is_object($json)) {
-            $this->internal = (property_exists($json, 'internal')) ? $json->internal : $this->internal;
+            $this->linkType = (property_exists($json, 'linkType')) ? $json->linkType : $this->linkType;
             $this->target = (property_exists($json, 'target')) ? $json->target : $this->target;
             $this->postId = (property_exists($json, 'postId')) ? $json->postId : $this->postId;
             $this->url = (property_exists($json, 'url')) ? $json->url : $this->url;
         }
 
-        $field_data = array_merge(
+        return array_merge(
             $field_data,
             [
                 'posts' => $this->get_posts(),
-                'internal' => $this->internal,
+                'linkType' => $this->linkType,
                 'target' => $this->target,
                 'postId' => $this->postId,
                 'url' => $this->url
@@ -86,7 +89,17 @@ class SmartLink_Field extends Field
 
         return $field_data;
     }
-        
+
+    /**
+     * Return a differently formatted value for end-users
+     *
+     * @return mixed		
+     */
+    public function get_formatted_value()
+    {
+        return json_decode($this->get_value());
+    }
+
     /**
      * Get Posts and archives
      */
@@ -95,16 +108,6 @@ class SmartLink_Field extends Field
         $types = array_values(get_post_types(['public' => true]));
 
         return array_merge($this->get_archives_from_types($types), $this->get_posts_from_types($types));
-    }
-
-    /**
-     * Return a differently formatted value for end-users
-     *
-     * @return mixed
-     */
-    public function get_formatted_value()
-    {
-        return json_decode($this->get_value());
     }
 
     function get_archives_from_types($types)
