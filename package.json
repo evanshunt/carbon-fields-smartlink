@@ -1,6 +1,6 @@
 {
   "name": "carbon-fields-smartlink",
-  "version": "0.0.5",
+  "version": "1.0.0",
   "scripts": {
     "dev": "webpack -w",
     "build": "webpack"
