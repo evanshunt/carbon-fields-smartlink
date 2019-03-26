@@ -21,7 +21,7 @@ const setInitial = (field) => {
 		}
 	}
 	return newField;
-}
+}¬
 
 class SmartLinkField extends Component {
 	/**

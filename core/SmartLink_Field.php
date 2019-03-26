@@ -4,7 +4,6 @@ namespace Carbon_Field_SmartLink;
 
 use Carbon_Fields\Field\Field;
 use Carbon_Field_SmartLink\LinkTypes;
-use App\Debug;
 
 class SmartLink_Field extends Field
 {
@@ -34,11 +33,17 @@ class SmartLink_Field extends Field
     {
         $root_uri = \Carbon_Fields\Carbon_Fields::directory_to_url(\Carbon_Field_SmartLink\DIR);
 
-        // Enqueue JS
-        wp_enqueue_script('carbon-field-SmartLink', $root_uri . '/assets/js/bundle.js', array( 'carbon-fields-boot' ));
-
-        // Enqueue CSS
-        wp_enqueue_style('carbon-field-SmartLink', $root_uri . '/assets/css/field.css');
+        // Enqueue field styles.
+        wp_enqueue_style(
+            'carbon-field-number',
+            $root_uri . '/build/bundle' . ((defined('SCRIPT_DEBUG') && SCRIPT_DEBUG) ? '' : '.min') . '.css'
+        );
+        // Enqueue field scripts.
+        wp_enqueue_script(
+            'carbon-field-number',
+            $root_uri . '/build/bundle' . ((defined('SCRIPT_DEBUG') && SCRIPT_DEBUG) ? '' : '.min') . '.js',
+            array('carbon-fields-core' )
+        );
     }
 
     /**
