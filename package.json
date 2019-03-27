@@ -1,6 +1,6 @@
 {
   "name": "carbon-fields-smartlink",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "scripts": {
     "start": "npm run development -- --watch",
     "build": "npm run development && npm run production",

@@ -1,4 +1,4 @@
-.carbon-smartlink .link-config {
+.cf-smartlink .link-config {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -13,19 +13,27 @@
   -webkit-box-align: start;
       -ms-flex-align: start;
           align-items: flex-start; }
+  .cf-smartlink .link-config fieldset {
+    -webkit-box-flex: 1;
+        -ms-flex: 1 1 auto;
+            flex: 1 1 auto;
+    margin-right: 3em; }
+  .cf-smartlink .link-config legend {
+    font-size: 1.1em;
+    margin-bottom: 0.25em; }
 
-.carbon-smartlink button {
+.cf-smartlink button {
   -webkit-box-flex: 0;
       -ms-flex: 0 0 auto;
           flex: 0 0 auto; }
 
-.carbon-smartlink .link-config fieldset {
-  margin-right: 3em; }
+.cf-smartlink label {
+  margin-top: 0.5em;
+  display: block; }
+  .cf-smartlink label input,
+  .cf-smartlink label div {
+    font-weight: normal; }
 
-.carbon-smartlink .link-config legend {
-  font-size: 1.1em;
-  margin-bottom: 0.75em; }
-
-.carbon-smartlink label input, .carbon-smartlink label div {
-  font-weight: normal; }
+.cf-smartlink input[type="text"] {
+  width: 100%; }
 

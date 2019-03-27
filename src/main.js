@@ -4,27 +4,26 @@
 import { Component } from '@wordpress/element';
 import Select from 'react-select';
 
+let initial;
+let displayField;
+
 const stringifyField = (field) => JSON.stringify({
 	linkType: field.linkType,
 	target: field.target,
 	postId: field.postId,
-	url: field.url
+    url: field.url
 });
 
 const setInitial = (field) => {
-    let newField = {...field};
-	if(typeof newField.initial === 'undefined') {
-		newField.initial = {
-			linkType: newField.linkType,
-			target: newField.target,
-			postId: newField.postId,
-			url: newField.url			
+	if(typeof initial === 'undefined') {
+		initial = {
+			linkType: field.linkType,
+			target: field.target,
+			postId: field.postId,
+			url: field.url			
 		}
 	}
-	return newField;
 }
-
-let displayField;
 
 class SmartLinkField extends Component {
 	/**
@@ -36,97 +35,94 @@ class SmartLinkField extends Component {
 
     handleTypeChange = (e) => {
         const { id, field, onChange} = this.props;
-        const {value} = e.target;
-        let newField = setInitial(field);
+        const changedValue = e.target.value;
+        setInitial(displayField);
 
-        newField.postId = '';
-        newField.linkType = value;
-        if (value) {
-            let post = newField.posts.find(post => post.value === newField.postId);
-            newField.url = (typeof post !== 'undefined') ? post.url : '';
+        displayField.postId = '';
+        displayField.linkType = changedValue;
+        if (changedValue) {
+            let post = field.posts.find(post => post.value === displayField.postId);
+            displayField.url = (typeof post !== 'undefined') ? post.url : '';
         }
         onChange(
             id,
-            stringifyField(newField)
+            stringifyField(displayField)
         );
     }
 
     handleTargetChange = (e) => {
-        const { id, field, onChange } = this.props;
-        const { value } = e.target;
-        let newField = setInitial(field);
-        console.log(newField);
+        const { id, onChange } = this.props;
+        const changedValue = e.target.value;
+        setInitial(displayField);
 
-        newField.target = value;
-        console.log(newField);
+        displayField.target = changedValue;
         onChange(
             id,
-            stringifyField(newField)
+            stringifyField(displayField)
         );
     }
 
     handleUrlChange = (e) => {
-        const { id, field, onChange } = this.props;
-        const { value } = e.target;
-        let newField = setInitial(field);
+        const { id, onChange } = this.props;
+        const changedValue = e.target.value;
+        setInitial(displayField);
 
-        newField.url = value;
+        displayField.url = changedValue;
         onChange(
             id,
-            stringifyField(newField)
+            stringifyField(displayField)
         );
     }
 
     handleEmailChange = (e) => {
-        const { id, field, onChange } = this.props;
-        const { value } = e.target;
-        let newField = setInitial(field);
+        const { id, onChange } = this.props;
+        const changedValue = e.target.value;
+        setInitial(displayField);
 
-        newField.url = `mailto:${value}`;
+        displayField.url = `mailto:${changedValue}`;
         onChange(
             id,
-            stringifyField(newField)
+            stringifyField(displayField)
         );
     }
 
     handleTelChange = (e) => {
-        const { id, field, onChange } = this.props;
-        const { value } = e.target;
-        let newField = setInitial(field);
+        const { id, onChange } = this.props;
+        const changedValue = e.target.value;
+        setInitial(displayField);
 
-        newField.url = `tel:${value.replace(/\s/g, '')}`;
+        displayField.url = `tel:${changedValue.replace(/\s/g, '')}`;
         onChange(
             id,
-            stringifyField(newField)
+            stringifyField(displayField)
         );
     }
 
-    handleIdChange = (e) => {
-        const { id, field, onChange } = this.props;
-        const { value } = e.target;
-        let newField = setInitial(field);
+    handleIdChange = (changedValue) => {
+        const { id, onChange } = this.props;
+        setInitial(displayField);
 
-        newField.postId = value.value;
-        newField.url = value.url;
+        displayField.postId = changedValue.value;
+        displayField.url = changedValue.url;
         onChange(
             id,
-            stringifyField(newField)
+            stringifyField(displayField)
         );
     }
 
     handleRestore = (e) => {
         e.preventDefault();
-        const { id, field, onChange } = this.props;
-        let newField = field;
+        const { id, onChange } = this.props;
+        setInitial(displayField);
         
-        if (field.initial !== 'undefined') {
-            newField.linkType = field.initial.linkType;
-            newField.target = field.initial.target;
-            newField.postId = field.initial.postId;
-            newField.url = field.initial.url;
+        if (initial !== 'undefined') {
+            displayField.linkType = initial.linkType;
+            displayField.target = initial.target;
+            displayField.postId = initial.postId;
+            displayField.url = initial.url;
             onChange(
                 id,
-                stringifyField(newField)
+                stringifyField(displayField)
             );
         }
     }
@@ -140,7 +136,8 @@ class SmartLinkField extends Component {
         const {
             id,
             name,
-            field
+            field,
+            value
         } = this.props;
         const {
             handleTypeChange,
@@ -152,10 +149,9 @@ class SmartLinkField extends Component {
             handleRestore
         } = this;
 
-        let post = field.posts.find(post => post.value === field.postId);
-        if (!displayField) {
-            displayField = field;
-        }
+        displayField = JSON.parse(value);
+        let post = field.posts.find(post => post.value === displayField.postId);
+
         return <div>
             <div className="link-config">
                 <fieldset>
@@ -168,34 +164,34 @@ class SmartLinkField extends Component {
                             onChange={handleTypeChange}
                             checked={displayField.linkType == 1 ? 'checked' : ''}
                         />Internal
-				</label>
-                    <label>
-                        <input
-                            type="radio"
-                            name={name + 'linkType'}
-                            value='0'
-                            onChange={handleTypeChange}
-                            checked={displayField.linkType == 0 ? 'checked' : ''}
-                        />External
-				</label>
-                    <label>
-                        <input
-                            type="radio"
-                            name={name + 'linkType'}
-                            value='2'
-                            onChange={handleTypeChange}
-                            checked={displayField.linkType == 2 ? 'checked' : ''}
-                        />Email
-				</label>
-                    <label>
-                        <input
-                            type="radio"
-                            name={name + 'linkType'}
-                            value='3'
-                            onChange={handleTypeChange}
-                            checked={displayField.linkType == 3 ? 'checked' : ''}
-                        />Phone
-				</label>
+                    </label>
+                        <label>
+                            <input
+                                type="radio"
+                                name={name + 'linkType'}
+                                value='0'
+                                onChange={handleTypeChange}
+                                checked={displayField.linkType == 0 ? 'checked' : ''}
+                            />External
+                    </label>
+                        <label>
+                            <input
+                                type="radio"
+                                name={name + 'linkType'}
+                                value='2'
+                                onChange={handleTypeChange}
+                                checked={displayField.linkType == 2 ? 'checked' : ''}
+                            />Email
+                    </label>
+                        <label>
+                            <input
+                                type="radio"
+                                name={name + 'linkType'}
+                                value='3'
+                                onChange={handleTypeChange}
+                                checked={displayField.linkType == 3 ? 'checked' : ''}
+                            />Phone
+                    </label>
                 </fieldset>
                 <fieldset>
                     <legend>Target</legend>
@@ -226,7 +222,7 @@ class SmartLinkField extends Component {
 				<Select
                         value={post ? post : ''}
                         onChange={handleIdChange}
-                        options={displayField.posts}
+                        options={field.posts}
                     />
                 </label>
                 :
@@ -237,7 +233,7 @@ class SmartLinkField extends Component {
 				<input
                         type="text"
                         name={name + 'email'}
-                        value={displayField.linkType == '2' ? field.url.slice(7) : ''}
+                        value={displayField.linkType == '2' ? displayField.url.slice(7) : ''}
                         onChange={handleEmailChange}
                     />
                 </label>
@@ -249,7 +245,7 @@ class SmartLinkField extends Component {
 				<input
                         type="text"
                         name={name + 'phone'}
-                        value={displayField.linkType == '3' ? field.url.slice(4) : ''}
+                        value={displayField.linkType == '3' ? displayField.url.slice(4) : ''}
                         onChange={handleTelChange}
                     />
                 </label>
@@ -261,8 +257,8 @@ class SmartLinkField extends Component {
 			<input
                     type="text"
                     name={name + 'url'}
-                    value={displayField.url ? field.url : ''}
-                    readOnly={parseInt(field.linkType)}
+                    value={displayField.url ? displayField.url : ''}
+                    readOnly={parseInt(displayField.linkType)}
                     onChange={handleUrlChange}
                 />
             </label>
@@ -270,7 +266,7 @@ class SmartLinkField extends Component {
                 type="hidden"
                 id={id}
                 name={name}
-                value={displayField.value}
+                value={value}
                 readOnly={true}
             />
         </div>;

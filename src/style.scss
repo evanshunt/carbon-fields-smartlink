@@ -1,26 +1,37 @@
-.carbon-smartlink {
+.cf-smartlink {
   .link-config {
     display: flex;
     flex-flow: row wrap;
     margin-bottom: 1em;
     justify-content: space-between;
     align-items: flex-start;
+
+    fieldset {
+      flex: 1 1 auto;
+      margin-right: 3em;
+    }
+
+    legend {
+      font-size: 1.1em;
+      margin-bottom: 0.25em;
+    }
   }
+
   button {
     flex: 0 0 auto;
   }
-  .link-config {
-    fieldset {
-      margin-right: 3em;
-    }
-    legend {
-      font-size: 1.1em;
-      margin-bottom: 0.75em;
-    }
-  }
+
   label {
-    input, div {
+    margin-top: 0.5em;
+    display: block;
+
+    input,
+    div {
       font-weight: normal;
     }
+  }
+
+  input[type="text"] {
+    width: 100%;
   }
 }
