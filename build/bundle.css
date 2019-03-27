@@ -1,0 +1,31 @@
+.carbon-smartlink .link-config {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-flow: row wrap;
+          flex-flow: row wrap;
+  margin-bottom: 1em;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start; }
+
+.carbon-smartlink button {
+  -webkit-box-flex: 0;
+      -ms-flex: 0 0 auto;
+          flex: 0 0 auto; }
+
+.carbon-smartlink .link-config fieldset {
+  margin-right: 3em; }
+
+.carbon-smartlink .link-config legend {
+  font-size: 1.1em;
+  margin-bottom: 0.75em; }
+
+.carbon-smartlink label input, .carbon-smartlink label div {
+  font-weight: normal; }
+
