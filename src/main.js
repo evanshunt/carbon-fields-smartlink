@@ -8,21 +8,21 @@ let initial;
 let displayField;
 
 const stringifyField = (field) => JSON.stringify({
-	linkType: field.linkType,
-	target: field.target,
-	postId: field.postId,
+    linkType: field.linkType,
+    target: field.target,
+    postId: field.postId,
     url: field.url
 });
 
 const setInitial = (field) => {
-	if(typeof initial === 'undefined') {
-		initial = {
-			linkType: field.linkType,
-			target: field.target,
-			postId: field.postId,
-			url: field.url			
-		}
-	}
+    if (typeof initial === 'undefined') {
+        initial = {
+            linkType: field.linkType,
+            target: field.target,
+            postId: field.postId,
+            url: field.url
+        }
+    }
 }
 
 class SmartLinkField extends Component {
@@ -34,7 +34,7 @@ class SmartLinkField extends Component {
 	 */
 
     handleTypeChange = (e) => {
-        const { id, field, onChange} = this.props;
+        const { id, field, onChange } = this.props;
         const changedValue = e.target.value;
         setInitial(displayField);
 
@@ -114,7 +114,7 @@ class SmartLinkField extends Component {
         e.preventDefault();
         const { id, onChange } = this.props;
         setInitial(displayField);
-        
+
         if (initial !== 'undefined') {
             displayField.linkType = initial.linkType;
             displayField.target = initial.target;
@@ -150,7 +150,11 @@ class SmartLinkField extends Component {
         } = this;
 
         displayField = JSON.parse(value);
-        let post = field.posts.find(post => post.value === displayField.postId);
+        const selectedId = Object.prototype.hasOwnProperty(displayField, 'postId') ? displayField.postId : null;
+        const linkType = Object.prototype.hasOwnProperty(displayField, 'linkType') ? displayField.linkType : 0;
+        const target = Object.prototype.hasOwnProperty(displayField, 'target') ? displayField.target : null;
+        const url = Object.prototype.hasOwnProperty(displayField, 'url') ? displayField.url : null;
+        let post = field.posts.find(post => post.value === selectedId);
 
         return <div>
             <div className="link-config">
@@ -162,35 +166,35 @@ class SmartLinkField extends Component {
                             name={name + 'linkType'}
                             value='1'
                             onChange={handleTypeChange}
-                            checked={displayField.linkType == 1 ? 'checked' : ''}
+                            checked={linkType == 1 ? 'checked' : ''}
                         />Internal
                     </label>
-                        <label>
-                            <input
-                                type="radio"
-                                name={name + 'linkType'}
-                                value='0'
-                                onChange={handleTypeChange}
-                                checked={displayField.linkType == 0 ? 'checked' : ''}
-                            />External
+                    <label>
+                        <input
+                            type="radio"
+                            name={name + 'linkType'}
+                            value='0'
+                            onChange={handleTypeChange}
+                            checked={linkType == 0 ? 'checked' : ''}
+                        />External
                     </label>
-                        <label>
-                            <input
-                                type="radio"
-                                name={name + 'linkType'}
-                                value='2'
-                                onChange={handleTypeChange}
-                                checked={displayField.linkType == 2 ? 'checked' : ''}
-                            />Email
+                    <label>
+                        <input
+                            type="radio"
+                            name={name + 'linkType'}
+                            value='2'
+                            onChange={handleTypeChange}
+                            checked={linkType == 2 ? 'checked' : ''}
+                        />Email
                     </label>
-                        <label>
-                            <input
-                                type="radio"
-                                name={name + 'linkType'}
-                                value='3'
-                                onChange={handleTypeChange}
-                                checked={displayField.linkType == 3 ? 'checked' : ''}
-                            />Phone
+                    <label>
+                        <input
+                            type="radio"
+                            name={name + 'linkType'}
+                            value='3'
+                            onChange={handleTypeChange}
+                            checked={linkType == 3 ? 'checked' : ''}
+                        />Phone
                     </label>
                 </fieldset>
                 <fieldset>
@@ -201,7 +205,7 @@ class SmartLinkField extends Component {
                             name={name + 'target'}
                             value='_self'
                             onChange={handleTargetChange}
-                            checked={displayField.target == '_self'}
+                            checked={target == '_self'}
                         />Same Tab
 				</label>
                     <label>
@@ -210,13 +214,13 @@ class SmartLinkField extends Component {
                             name={name + 'target'}
                             value='_blank'
                             onChange={handleTargetChange}
-                            checked={displayField.target == '_blank'}
+                            checked={target == '_blank'}
                         />New Tab
 			</label>
                 </fieldset>
                 <button onClick={handleRestore}>Restore Saved</button>
             </div>
-            {displayField.linkType == '1' ?
+            {linkType == '1' ?
                 <label>
                     Page
 				<Select
@@ -228,24 +232,24 @@ class SmartLinkField extends Component {
                 :
                 <span></span>
             }
-            {displayField.linkType == '2' ?
+            {linkType == '2' ?
                 <label>Email
 				<input
                         type="text"
                         name={name + 'email'}
-                        value={displayField.linkType == '2' ? displayField.url.slice(7) : ''}
+                        value={linkType == '2' ? url.slice(7) : ''}
                         onChange={handleEmailChange}
                     />
                 </label>
                 :
                 <span></span>
             }
-            {displayField.linkType == '3' ?
+            {linkType == '3' ?
                 <label>Phone
 				<input
                         type="text"
                         name={name + 'phone'}
-                        value={displayField.linkType == '3' ? displayField.url.slice(4) : ''}
+                        value={linkType == '3' ? url.slice(4) : ''}
                         onChange={handleTelChange}
                     />
                 </label>
@@ -257,8 +261,8 @@ class SmartLinkField extends Component {
 			<input
                     type="text"
                     name={name + 'url'}
-                    value={displayField.url ? displayField.url : ''}
-                    readOnly={parseInt(displayField.linkType)}
+                    value={url ? url : ''}
+                    readOnly={parseInt(linkType)}
                     onChange={handleUrlChange}
                 />
             </label>
