@@ -4,7 +4,6 @@ namespace Carbon_Field_SmartLink;
 
 use Carbon_Fields\Field\Field;
 use Carbon_Field_SmartLink\LinkTypes;
-use App\Debug;
 
 class SmartLink_Field extends Field
 {
@@ -33,7 +32,6 @@ class SmartLink_Field extends Field
     public static function admin_enqueue_scripts()
     {
         $root_uri = \Carbon_Fields\Carbon_Fields::directory_to_url(\Carbon_Field_SmartLink\DIR);
-        Debug::log($root_uri . '/build/bundle' . ((defined('SCRIPT_DEBUG') && SCRIPT_DEBUG) ? '' : '.min') . '.js');
 
         // Enqueue field styles.
         wp_enqueue_style(
