@@ -36,8 +36,8 @@ class SmartLinkField extends Component {
     handleTypeChange = (e) => {
         const { id, field, onChange } = this.props;
         const changedValue = e.target.value;
-        setInitial(displayField);
 
+        setInitial(displayField);
         displayField.postId = '';
         displayField.linkType = changedValue;
         if (changedValue) {
@@ -53,8 +53,8 @@ class SmartLinkField extends Component {
     handleTargetChange = (e) => {
         const { id, onChange } = this.props;
         const changedValue = e.target.value;
+        
         setInitial(displayField);
-
         displayField.target = changedValue;
         onChange(
             id,
@@ -65,8 +65,8 @@ class SmartLinkField extends Component {
     handleUrlChange = (e) => {
         const { id, onChange } = this.props;
         const changedValue = e.target.value;
-        setInitial(displayField);
 
+        setInitial(displayField);
         displayField.url = changedValue;
         onChange(
             id,
@@ -77,8 +77,8 @@ class SmartLinkField extends Component {
     handleEmailChange = (e) => {
         const { id, onChange } = this.props;
         const changedValue = e.target.value;
-        setInitial(displayField);
 
+        setInitial(displayField);
         displayField.url = `mailto:${changedValue}`;
         onChange(
             id,
@@ -89,8 +89,8 @@ class SmartLinkField extends Component {
     handleTelChange = (e) => {
         const { id, onChange } = this.props;
         const changedValue = e.target.value;
-        setInitial(displayField);
 
+        setInitial(displayField);
         displayField.url = `tel:${changedValue.replace(/\s/g, '')}`;
         onChange(
             id,
@@ -100,8 +100,8 @@ class SmartLinkField extends Component {
 
     handleIdChange = (changedValue) => {
         const { id, onChange } = this.props;
-        setInitial(displayField);
 
+        setInitial(displayField);
         displayField.postId = changedValue.value;
         displayField.url = changedValue.url;
         onChange(
@@ -113,6 +113,7 @@ class SmartLinkField extends Component {
     handleRestore = (e) => {
         e.preventDefault();
         const { id, onChange } = this.props;
+
         setInitial(displayField);
 
         if (initial !== 'undefined') {
@@ -149,12 +150,19 @@ class SmartLinkField extends Component {
             handleRestore
         } = this;
 
-        displayField = JSON.parse(value);
-        const selectedId = Object.prototype.hasOwnProperty(displayField, 'postId') ? displayField.postId : null;
-        const linkType = Object.prototype.hasOwnProperty(displayField, 'linkType') ? displayField.linkType : 0;
-        const target = Object.prototype.hasOwnProperty(displayField, 'target') ? displayField.target : null;
-        const url = Object.prototype.hasOwnProperty(displayField, 'url') ? displayField.url : null;
+        const parsedJson = JSON.parse(value);
+        const selectedId = parsedJson && parsedJson.hasOwnProperty('postId') ? parsedJson.postId : null;
+        const linkType = parsedJson && parsedJson.hasOwnProperty('linkType') ? parsedJson.linkType : 1;
+        const target = parsedJson && parsedJson.hasOwnProperty('target') ? parsedJson.target : '_self';
+        const url = parsedJson && parsedJson.hasOwnProperty('url') ? parsedJson.url : '';
         let post = field.posts.find(post => post.value === selectedId);
+
+        displayField = {
+            postId: selectedId,
+            linkType: linkType,
+            target: target,
+            url: url
+        };
 
         return <div>
             <div className="link-config">

@@ -1,6 +1,6 @@
 {
   "name": "carbon-fields-smartlink",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "scripts": {
     "start": "npm run development -- --watch",
     "build": "npm run development && npm run production",
@@ -45,6 +45,6 @@
     "lodash": "^4.17.11",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
-    "react-select": "^2.1.0"
+    "react-select": "^2.4.2"
   }
 }
