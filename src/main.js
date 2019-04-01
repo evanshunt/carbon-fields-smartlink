@@ -7,24 +7,6 @@ import Select from 'react-select';
 let initial;
 let displayField;
 
-const stringifyField = (field) => JSON.stringify({
-    linkType: field.linkType,
-    target: field.target,
-    postId: field.postId,
-    url: field.url
-});
-
-const setInitial = (field) => {
-    if (typeof initial === 'undefined') {
-        initial = {
-            linkType: field.linkType,
-            target: field.target,
-            postId: field.postId,
-            url: field.url
-        }
-    }
-}
-
 class SmartLinkField extends Component {
 	/**
 	 * Handles the change of the input.
@@ -33,97 +15,121 @@ class SmartLinkField extends Component {
 	 * @return {void}
 	 */
 
+    stringifyField = () => JSON.stringify({
+        linkType: this.displayField.linkType,
+        target: this.displayField.target,
+        postId: this.displayField.postId,
+        url: this.displayField.url
+    });
+
+    setInitial = () => {
+        if (typeof this.initial === 'undefined') {
+            this.initial = {
+                linkType: this.displayField.linkType,
+                target: this.displayField.target,
+                postId: this.displayField.postId,
+                url: this.displayField.url
+            }
+        }
+    }
+
     handleTypeChange = (e) => {
         const { id, field, onChange } = this.props;
         const changedValue = e.target.value;
-
-        setInitial(displayField);
-        displayField.postId = '';
-        displayField.linkType = changedValue;
+        const { setInitial, stringifyField } = this;
+        
+        setInitial();
+        this.displayField.postId = '';
+        this.displayField.linkType = changedValue;
         if (changedValue) {
-            let post = field.posts.find(post => post.value === displayField.postId);
-            displayField.url = (typeof post !== 'undefined') ? post.url : '';
+            let post = field.posts.find(post => post.value === this.displayField.postId);
+            this.displayField.url = (typeof post !== 'undefined') ? post.url : '';
         }
         onChange(
             id,
-            stringifyField(displayField)
+            stringifyField()
         );
     }
 
     handleTargetChange = (e) => {
         const { id, onChange } = this.props;
         const changedValue = e.target.value;
+        const { setInitial, stringifyField } = this;
         
-        setInitial(displayField);
-        displayField.target = changedValue;
+        setInitial();
+        this.displayField.target = changedValue;
         onChange(
             id,
-            stringifyField(displayField)
+            stringifyField()
         );
     }
 
     handleUrlChange = (e) => {
         const { id, onChange } = this.props;
         const changedValue = e.target.value;
+        const { setInitial, stringifyField } = this;
 
-        setInitial(displayField);
-        displayField.url = changedValue;
+        setInitial();
+        this.displayField.url = changedValue;
         onChange(
             id,
-            stringifyField(displayField)
+            stringifyField()
         );
     }
 
     handleEmailChange = (e) => {
         const { id, onChange } = this.props;
         const changedValue = e.target.value;
+        const { setInitial, stringifyField } = this;
 
-        setInitial(displayField);
-        displayField.url = `mailto:${changedValue}`;
+        setInitial();
+        this.displayField.url = `mailto:${changedValue}`;
         onChange(
             id,
-            stringifyField(displayField)
+            stringifyField()
         );
     }
 
     handleTelChange = (e) => {
         const { id, onChange } = this.props;
         const changedValue = e.target.value;
+        const { setInitial, stringifyField } = this;
 
-        setInitial(displayField);
-        displayField.url = `tel:${changedValue.replace(/\s/g, '')}`;
+        setInitial();
+        this.displayField.url = `tel:${changedValue.replace(/\s/g, '')}`;
         onChange(
             id,
-            stringifyField(displayField)
+            stringifyField()
         );
     }
 
     handleIdChange = (changedValue) => {
         const { id, onChange } = this.props;
+        const { setInitial, stringifyField } = this;
 
-        setInitial(displayField);
-        displayField.postId = changedValue.value;
-        displayField.url = changedValue.url;
+        setInitial();
+        this.displayField.postId = changedValue.value;
+        this.displayField.url = changedValue.url;
         onChange(
             id,
-            stringifyField(displayField)
+            stringifyField()
         );
     }
 
     handleRestore = (e) => {
         e.preventDefault();
         const { id, onChange } = this.props;
+        const { setInitial, stringifyField } = this;
 
-        setInitial(displayField);
-
-        if (initial !== 'undefined') {
-            displayField.linkType = initial.linkType;
-            displayField.target = initial.target;
-            displayField.postId = initial.postId;
-            displayField.url = initial.url;
+        setInitial();
+        if (this.initial !== 'undefined') {
+            this.displayField.linkType = this.initial.linkType;
+            this.displayField.target = this.initial.target;
+            this.displayField.postId = this.initial.postId;
+            this.displayField.url = this.initial.url;
             onChange(
                 id,
-                stringifyField(displayField)
+                stringifyField()
             );
         }
     }
@@ -149,7 +155,7 @@ class SmartLinkField extends Component {
             handleIdChange,
             handleRestore
         } = this;
-
+        
         const parsedJson = JSON.parse(value);
         const selectedId = parsedJson && parsedJson.hasOwnProperty('postId') ? parsedJson.postId : null;
         const linkType = parsedJson && parsedJson.hasOwnProperty('linkType') ? parsedJson.linkType : 1;
@@ -157,13 +163,12 @@ class SmartLinkField extends Component {
         const url = parsedJson && parsedJson.hasOwnProperty('url') ? parsedJson.url : '';
         let post = field.posts.find(post => post.value === selectedId);
 
-        displayField = {
+        this.displayField = {
             postId: selectedId,
             linkType: linkType,
             target: target,
             url: url
         };
-
         return <div>
             <div className="link-config">
                 <fieldset>
