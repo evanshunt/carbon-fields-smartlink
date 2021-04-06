@@ -7,6 +7,9 @@
     "development": "cross-env NODE_ENV=development webpack --mode development",
     "production": "cross-env NODE_ENV=production webpack --mode production"
   },
+  "engines": {
+    "node": ">=8.0 <12"
+  },
   "license": "MIT",
   "devDependencies": {
     "@babel/core": "^7.1.6",

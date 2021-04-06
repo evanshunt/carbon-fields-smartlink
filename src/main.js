@@ -37,7 +37,7 @@ class SmartLinkField extends Component {
         const { id, field, onChange } = this.props;
         const changedValue = e.target.value;
         const { setInitial, stringifyField } = this;
-        
+
         setInitial();
         this.displayField.postId = '';
         this.displayField.linkType = changedValue;
@@ -55,7 +55,7 @@ class SmartLinkField extends Component {
         const { id, onChange } = this.props;
         const changedValue = e.target.value;
         const { setInitial, stringifyField } = this;
-        
+
         setInitial();
         this.displayField.target = changedValue;
         onChange(
@@ -155,8 +155,8 @@ class SmartLinkField extends Component {
             handleIdChange,
             handleRestore
         } = this;
-        
-        const parsedJson = JSON.parse(value);
+
+        const parsedJson = value ? JSON.parse(value) : {};
         const selectedId = parsedJson && parsedJson.hasOwnProperty('postId') ? parsedJson.postId : null;
         const linkType = parsedJson && parsedJson.hasOwnProperty('linkType') ? parsedJson.linkType : 1;
         const target = parsedJson && parsedJson.hasOwnProperty('target') ? parsedJson.target : '_self';
