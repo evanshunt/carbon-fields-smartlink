@@ -15,8 +15,7 @@
   flex: 0 0 auto; }
 
 .cf-smartlink label {
-  margin-top: 0.5em;
-  display: block; }
+  margin-top: 0.5em; }
   .cf-smartlink label input,
   .cf-smartlink label div {
     font-weight: normal; }

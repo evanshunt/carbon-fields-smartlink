@@ -39,6 +39,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.1.5",
+    "@wordpress/components": "^13.0.1",
     "@wordpress/compose": "^3.0.0",
     "@wordpress/data": "^4.0.1",
     "@wordpress/element": "^2.1.8",

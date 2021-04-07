@@ -2,6 +2,7 @@
  * External dependencies.
  */
 import { Component } from '@wordpress/element';
+import { RadioControl } from '@wordpress/components';
 import Select from 'react-select';
 
 let initial;
@@ -33,15 +34,14 @@ class SmartLinkField extends Component {
         }
     }
 
-    handleTypeChange = (e) => {
+    handleTypeChange = (option) => {
         const { id, field, onChange } = this.props;
-        const changedValue = e.target.value;
         const { setInitial, stringifyField } = this;
 
         setInitial();
         this.displayField.postId = '';
-        this.displayField.linkType = changedValue;
-        if (changedValue) {
+        this.displayField.linkType = option;
+        if (option) {
             let post = field.posts.find(post => post.value === this.displayField.postId);
             this.displayField.url = (typeof post !== 'undefined') ? post.url : '';
         }
@@ -51,13 +51,12 @@ class SmartLinkField extends Component {
         );
     }
 
-    handleTargetChange = (e) => {
+    handleTargetChange = (option) => {
         const { id, onChange } = this.props;
-        const changedValue = e.target.value;
         const { setInitial, stringifyField } = this;
 
         setInitial();
-        this.displayField.target = changedValue;
+        this.displayField.target = option;
         onChange(
             id,
             stringifyField()
@@ -173,63 +172,27 @@ class SmartLinkField extends Component {
             <div className="link-config">
                 <fieldset>
                     <legend>Link Type</legend>
-                    <label>
-                        <input
-                            type="radio"
-                            name={name + 'linkType'}
-                            value='1'
-                            onChange={handleTypeChange}
-                            checked={linkType == 1 ? 'checked' : ''}
-                        />Internal
-                    </label>
-                    <label>
-                        <input
-                            type="radio"
-                            name={name + 'linkType'}
-                            value='0'
-                            onChange={handleTypeChange}
-                            checked={linkType == 0 ? 'checked' : ''}
-                        />External
-                    </label>
-                    <label>
-                        <input
-                            type="radio"
-                            name={name + 'linkType'}
-                            value='2'
-                            onChange={handleTypeChange}
-                            checked={linkType == 2 ? 'checked' : ''}
-                        />Email
-                    </label>
-                    <label>
-                        <input
-                            type="radio"
-                            name={name + 'linkType'}
-                            value='3'
-                            onChange={handleTypeChange}
-                            checked={linkType == 3 ? 'checked' : ''}
-                        />Phone
-                    </label>
+                    <RadioControl
+                        selected={linkType}
+                        options={[
+                            {label: 'Internal', value: '1'},
+                            {label: 'External', value: '0'},
+                            {label: 'Email', value: '2'},
+                            {label: 'Phone', value: '3'},
+                        ]}
+                        onChange={handleTypeChange}
+                    />
                 </fieldset>
                 <fieldset>
                     <legend>Target</legend>
-                    <label>
-                        <input
-                            type="radio"
-                            name={name + 'target'}
-                            value='_self'
-                            onChange={handleTargetChange}
-                            checked={target == '_self'}
-                        />Same Tab
-				</label>
-                    <label>
-                        <input
-                            type="radio"
-                            name={name + 'target'}
-                            value='_blank'
-                            onChange={handleTargetChange}
-                            checked={target == '_blank'}
-                        />New Tab
-			</label>
+                    <RadioControl
+                        selected={target}
+                        options={[
+                            {label: 'Same Tab', value: '_self'},
+                            {label: 'New Tab', value: '_blank'},
+                        ]}
+                        onChange={handleTargetChange}
+                    />
                 </fieldset>
                 <button onClick={handleRestore}>Restore Saved</button>
             </div>
