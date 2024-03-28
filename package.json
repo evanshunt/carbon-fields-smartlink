@@ -1,6 +1,6 @@
 {
   "name": "carbon-fields-smartlink",
-  "version": "1.0.5",
+  "version": "1.0.8",
   "scripts": {
     "start": "npm run development -- --watch",
     "build": "npm run development && npm run production",
@@ -8,7 +8,7 @@
     "production": "cross-env NODE_ENV=production webpack --mode production"
   },
   "engines": {
-    "node": ">=8.0 <12"
+    "node": ">=8.0 <13"
   },
   "license": "MIT",
   "devDependencies": {
@@ -39,15 +39,15 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.1.5",
-    "@wordpress/compose": "^3.0.0",
+    "@wordpress/compose": "^3.2.0",
     "@wordpress/data": "^4.0.1",
     "@wordpress/element": "^2.1.8",
     "@wordpress/hooks": "^2.0.3",
     "@wordpress/i18n": "^3.1.0",
     "classnames": "^2.2.6",
     "lodash": "^4.17.11",
-    "react": "^16.6.3",
-    "react-dom": "^16.6.3",
-    "react-select": "^2.4.2"
+    "react": "^17.0.0",
+    "react-dom": "^17.0.0",
+    "react-select": "^3.2.0"
   }
 }
